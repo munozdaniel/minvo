@@ -1,7 +1,8 @@
-<div class="page-header">
-    <h1>Congratulations!</h1>
-</div>
-
-<p>You're now flying with Phalcon. Great things are about to happen!</p>
-
-<em>This page is located at views/index/index.phtml</em>
+<h1 class="page-header">
+    TITULO <small> a sobreescribir</small>
+</h1>
+<ol class="breadcrumb">
+    <li class="active">
+        <i class="fa fa-dashboard"></i> Subtitulo
+    </li>
+</ol>

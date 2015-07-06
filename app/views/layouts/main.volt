@@ -10,7 +10,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.html">Kwi Soft</a>
+            <a class="navbar-brand" href="index.html">M-invo</a>
         </div>
         <!-- Fin: Menu para Dispositivos mobiles. -->
 
@@ -171,18 +171,10 @@
             <!-- HEADER del DIV -->
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">
-                        TITULO <small> a sobreescribir</small>
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li class="active">
-                            <i class="fa fa-dashboard"></i> Subtitulo
-                        </li>
-                    </ol>
+                    {{ content() }}
                 </div>
             </div>
             <!-- /.row -->
-
 
 
         </div>

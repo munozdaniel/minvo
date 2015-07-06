@@ -79,3 +79,14 @@ $di->setShared('session', function () {
 
     return $session;
 });
+/**
+ * podemos añadir clases personalizadas a los mensajes flash de esta forma
+ */
+$di->set('flash', function()
+{
+    return new Phalcon\Flash\Direct(array(
+        'error' => 'alert alert-error',
+        'success' => 'alert alert-success',
+        'notice' => 'alert alert-info',
+    ));
+});
