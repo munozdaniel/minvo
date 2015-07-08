@@ -85,7 +85,7 @@ class ComponentesUsuario extends Component
     {
        $auth = $this->session->get('auth');
         if ($auth) {
-            $this->_headerMenu['index']['caption']    = "NombreUser";
+            $this->_headerMenu['index']['caption']    = $auth['name'];
             $this->_headerMenu['sesion']     =  array('icono'=>'fa-power-off','caption' => 'Log out',
                 'accion' => 'end');
         }
