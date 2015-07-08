@@ -13,6 +13,7 @@ use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
 use Phalcon\Session\Adapter\Files as SessionAdapter;
 
+
 /**
  * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
  */
@@ -89,4 +90,16 @@ $di->set('flash', function()
         'success' => 'alert alert-success',
         'notice' => 'alert alert-info',
     ));
+});
+/**
+ * Registramos el servicio elements para poder cambiar elementos/componentes de la pagina a traves
+ * de el archivo php ComponentesUsuario
+ */
+//Registrar un componente de usuario
+
+/**
+ * Register a user component
+ */
+$di->set('elements', function(){
+    return new ComponentesUsuario();
 });

@@ -52,5 +52,16 @@ class SesionController extends \Phalcon\Mvc\Controller
         $this->session->set('auth',array('id'   =>  $usuario->id,
                                         'name'  =>  $usuario->name));
     }
+    /**
+     * Finishes the active session redirecting to the index
+     *
+     * @return unknown
+     */
+    public function endAction()
+    {
+        $this->session->remove('auth');
+        $this->flash->success('Goodbye!');
+        return $this->forward('index/index');
+    }
 }
 
