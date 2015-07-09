@@ -16,33 +16,38 @@ class ComponentesUsuario extends Component
      */
     private $_headerMenu = array(
         'index' => array(
-            'caption'   =>'Invitado',
-            'accion'   => 'index',
-            'icono' =>  'fa-user'
+            'caption'       =>'Invitado',
+            'controlador'   =>'index',
+            'accion'        => 'index',
+            'icono'         =>  'fa-user'
         )
         ,
         'perfil' => array(
-            'caption'   =>'Perfil',
-            'accion'   => '#',
-            'icono' =>  'fa-user'
+            'caption'       =>'Perfil',
+            'controlador'   =>'perfil',
+            'accion'        => '#',
+            'icono'         =>  'fa-user'
         )
         ,
         'correo'    =>  array(
-            'caption'   =>'Correo',
-            'accion'   =>  '#',
-            'icono' =>  'fa-envelope'
+            'caption'       =>'Correo',
+            'controlador'   =>'correo',
+            'accion'        =>  '#',
+            'icono'         =>  'fa-envelope'
         )
         ,
         'configuracion'    =>  array(
-            'caption'   =>'Configuración',
-            'accion'   =>  '#',
-            'icono' =>  'fa-gear'
+            'caption'       =>'Configuración',
+            'controlador'   =>'configuracion',
+            'accion'        =>  '#',
+            'icono'         =>  'fa-gear'
         )
         ,
         'sesion'    =>  array(
-            'caption'   =>'Log In',
-            'accion'   =>  '#',
-            'icono' =>  'fa-sign-in'
+            'caption'       =>'Log In',
+            'controlador'   =>'sesion',
+            'accion'        =>  '#',
+            'icono'         =>  'fa-sign-in'
         )
     );
 
@@ -87,18 +92,21 @@ class ComponentesUsuario extends Component
         if ($auth) {
             $this->_headerMenu['index']['caption']    = $auth['name'];
             $this->_headerMenu['sesion']     =  array('icono'=>'fa-power-off','caption' => 'Log out',
-                'accion' => 'end');
+                'accion' => 'end','controlador' => 'sesion');
         }
         echo '<li class="dropdown">';
         echo    '<a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-user"></i>'. $this->_headerMenu['index']['caption'] .'<b class="caret"></b></a>';
 
-        unset($this->_headerMenu['index']);
+        unset($this->_headerMenu['index']);//Elimino el primer elemento, porque solamente lo utilizo para mostrar el nombre del usuario.
 
         echo '<ul class="dropdown-menu">';
         foreach ($this->_headerMenu as $pagina) {
 
-                echo '<li><a href="#"><i class="fa fa-fw '.$pagina['icono'].'"></i> '.$pagina['caption'].'</a>';
+                echo '<li>';
+
+                echo $this->tag->linkTo($pagina['controlador'] . '/' . $pagina['accion'], '<i class="fa fa-fw '.$pagina['icono'].'"></i> '.$pagina['caption'].'</a>');
+
                 echo '</li>';
 
         }

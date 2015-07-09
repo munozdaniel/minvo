@@ -5,8 +5,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         {{ get_title() }}
         {{  stylesheet_link('css/custom.css') }}
-        <!-- Custom Fonts -->
-        <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <!-- Awesome Fonts -->
+        {{  stylesheet_link('font-awesome/css/font-awesome.min.css') }}
+
+
     </head>
     <body>
         {{ content() }}
