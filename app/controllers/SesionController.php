@@ -42,7 +42,7 @@ class SesionController extends \Phalcon\Mvc\Controller
         //return $this->forward('sesion/index');
         //Redireccionar la ejecución si el usuario es valido
         return $this->dispatcher->forward(array(
-            'controller' => 'sesion',
+            'controller' => 'index',
             'action' => 'index'
         ));
 

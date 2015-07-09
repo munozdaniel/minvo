@@ -114,22 +114,23 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav side-nav">
                 <li class="active">
-                    <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                     {{ link_to("index", '<i class="fa fa-fw fa-dashboard inline-block"></i> Dashboard')}}
                 </li>
                 <li>
-                    <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
+                    {{ link_to("charts", '<i class="fa fa-fw fa-bar-chart-o"></i> Charts')}}
                 </li>
                 <li>
-                    <a href="tables.html"><i class="fa fa-fw fa-table"></i> Tables</a>
+                    {{ link_to("tables", '<i class="fa fa-fw fa-table"></i> Tables')}}
                 </li>
                 <li>
-                    <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
+                    {{ link_to("products", '<i class="fa fa-fw fa-edit"></i> Formularios')}}
                 </li>
                 <li>
-                    <a href="bootstrap-elements.html"><i class="fa fa-fw fa-desktop"></i> Bootstrap Elements</a>
+                    {{ link_to("bootstrap-elements", '<i class="fa fa-fw fa-desktop"></i> Bootstrap Elements')}}
                 </li>
                 <li>
-                    <a href="bootstrap-grid.html"><i class="fa fa-fw fa-wrench"></i> Bootstrap Grid</a>
+                    {{ link_to("grid", '<i class="fa fa-fw fa-wrench"></i> Bootstrap Grid')}}
+
                 </li>
                 <li>
                     <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
