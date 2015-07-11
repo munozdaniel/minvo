@@ -68,7 +68,7 @@ class ProductsController extends ControllerBase
      */
     public function nuevoAction()
     {
-        //...
+        $this->view->formularioProducto = new ProductsForm(null,array('editar'=>true));
     }
     /**
      * Muestra la vista para editar productos existentes
@@ -82,7 +82,47 @@ class ProductsController extends ControllerBase
      */
     public function crearAction()
     {
-        //...
+        //Si no es post, volver al inicio.
+        if(!$this->request->isPost())
+        {
+            return $this->dispatcher->forward(array(
+                'controller' => 'products',
+                'action' => 'index'
+            ));
+        }
+        // Si los datos ingresados no pasan el filtro de ProductsForm, volver al formulario nuevo.
+        $formulario = new ProductsForm();
+        $producto = new Products();
+        $datos = $this->request->getPost();
+        if(!$formulario->isValid($datos,$producto))
+        {
+            foreach ($formulario->getMessages() as $mensaje) {
+                $this->flash->error($mensaje);
+            }
+            return $this->dispatcher->forward(array(
+                'controller' => 'products',
+                'action' => 'nuevo'
+            ));
+        }
+        //Si hubo un problema al guardar los datos de producto, volverl al formulario nuevo.
+        if($producto->save() == false)
+        {
+            foreach($producto->getMessages() as $mensaje)
+            {
+                $this->flash->error($mensaje);
+            }
+            return $this->dispatcher->forward(array(
+                'controller' => 'products',
+                'action' => 'nuevo'
+            ));
+        }
+        $formulario->clear();
+        $this->flash->success("Los datos se guardaron correctamente");
+        return $this->dispatcher->forward(array(
+            'controller' => 'products',
+            'action' => 'index'
+        ));
+
     }
     /**
      * Actualiza un producto basado en los datos ingresados en la acción "editar"

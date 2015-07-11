@@ -9,7 +9,9 @@
 
     <div class="col-md-offset-2" style="align-content: center;">
 
-
+        <div align="right">
+            {{ link_to("products/nuevo", "Create Products", "class": "btn btn-primary") }}
+        </div>
         {{ form("products/buscar") }}
         <fieldset>
             {% for unElemento in productoForm %}
