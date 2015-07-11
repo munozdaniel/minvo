@@ -126,10 +126,10 @@
                     {{ link_to("products", '<i class="fa fa-fw fa-edit"></i> Formularios')}}
                 </li>
                 <li>
-                    {{ link_to("bootstrap-elements", '<i class="fa fa-fw fa-desktop"></i> Bootstrap Elements')}}
+                    {{ link_to("companies", '<i class="fa fa-fw fa-desktop"></i> Companies')}}
                 </li>
                 <li>
-                    {{ link_to("grid", '<i class="fa fa-fw fa-wrench"></i> Bootstrap Grid')}}
+                    {{ link_to("producttypes", '<i class="fa fa-fw fa-wrench"></i> Bootstrap Grid')}}
 
                 </li>
                 <li>

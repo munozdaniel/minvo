@@ -13,6 +13,9 @@
         {{ form("products/buscar") }}
         <fieldset>
             {% for unElemento in productoForm %}
+                {% if is_a(unElemento, 'Phalcon\Forms\Element\Hidden') %}
+                    {{ unElemento }}
+                {% else %}
                 {# Muestro todos los campos #}
                 <div class="control-group">
                     {{ unElemento.label(['class':'control-label']) }}
@@ -20,6 +23,7 @@
                         {{ unElemento }}
                     </div>
                 </div>
+                {% endif %}
             {% endfor %}
             <br>
             <div class="control-group">

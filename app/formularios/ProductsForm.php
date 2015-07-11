@@ -13,22 +13,22 @@ class ProductsForm extends \Phalcon\Forms\Form
     public function initialize($entidad=null, $opciones=array())
     {
         //Si entra la opcion editar, entonces se muestra el campo id, sino no.(en teoria)
-        if (isset($opciones['editar'])) {
+        if (!isset($opciones['editar'])) {
             $elemento = new Text("id");
             $this->add($elemento->setLabel("ID"));
         } else {
             $this->add(new Hidden("id"));
         }
         //creo el campo nombre, tipo de producto y precio.
-        $nombre = new Text("nombre");
-        $tipoProducto = new Select("id_tipo_producto", ProductTypes::find(),
+        $nombre = new Text("name");
+        $tipoProducto = new Select("product_types_id", ProductTypes::find(),
             array(
                 'using' => array('id', 'name'),
                 'useEmpty' => true,
                 'emptyText' => '...',
                 'emptyValue' => ''
             ));
-        $precio = new Text('precio');
+        $precio = new Text('price');
 
         //Seteando los labels.
         $nombre->setLabel('NOMBRE');

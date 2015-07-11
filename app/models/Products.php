@@ -72,5 +72,16 @@ class Products extends \Phalcon\Mvc\Model
     {
         return parent::findFirst($parameters);
     }
-
+    /**
+     * Returns a human representation of 'active'
+     *
+     * @return string
+     */
+    public function getActiveDetail()
+    {
+        if ($this->active == 'Y') {
+            return 'Yes';
+        }
+        return 'No';
+    }
 }

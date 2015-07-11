@@ -48,7 +48,8 @@ $di->setShared('view', function () use ($config) {
                 'compiledPath' => $config->application->cacheDir,
                 'compiledSeparator' => '_'
             ));
-
+            $compiler = $volt->getCompiler();
+            $compiler->addFunction('is_a', 'is_a');
             return $volt;
         },
         '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
