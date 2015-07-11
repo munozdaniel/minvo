@@ -36,7 +36,7 @@ class ProductsController extends ControllerBase
         else
         {
             //Cuando se accede a traves del GET se mueve entre las paginas del paginador.
-            $numberPage = $this->request->getQuery("page", "int");
+            $numeroDePagina = $this->request->getQuery("page", "int");
         }
         $parametros = array();
         if($this->persistent->searchParams)
@@ -70,13 +70,7 @@ class ProductsController extends ControllerBase
     {
         $this->view->formularioProducto = new ProductsForm(null,array('editar'=>true));
     }
-    /**
-     * Muestra la vista para editar productos existentes
-     */
-    public function editarAction()
-    {
-        //...
-    }
+
     /**
      * Crea un nuevo producto basado en los datos ingresados en la acción "nuevo"
      */
@@ -125,11 +119,79 @@ class ProductsController extends ControllerBase
 
     }
     /**
+     * Muestra la vista para editar productos existentes
+     */
+    public function editarAction($id)
+    {
+        if(!$this->request->isPost())
+        {
+            $producto = Products::findFirstById($id);
+            if(!$producto)
+            {
+                $this->flash->error("No se encontro el elemento en la base de datos");
+                return $this->dispatcher->forward(array(
+                    'controller' => 'products',
+                    'action' => 'index'
+                ));
+            }
+            $this->view->formulario = new ProductsForm($producto,array('editar'=>true));
+        }
+    }
+    /**
      * Actualiza un producto basado en los datos ingresados en la acción "editar"
      */
     public function guardarAction()
     {
-        //...
+        if(!$this->request->isPost())
+        {
+            return $this->dispatcher->forward(array(
+                'controller' => 'products',
+                'action' => 'index'
+            ));
+        }
+        $id = $this->request->getPost('id','int');
+        $producto = Products::findFirstById($id);
+        if(!producto)
+        {
+            $this->flash->error("Hubo problemas para encontrar el producto.");
+            return $this->dispatcher->forward(array(
+                'controller' => 'products',
+                'action' => 'index'
+            ));
+        }
+        $formulario = new ProductsForm();
+        $this->view->form = $formulario;
+        $data = $this->request->getPost();
+        
+        if(!$formulario->isValid($data,$producto))
+        {
+            foreach($formulario->getMessages() as $mensaje)
+            {
+                $this->flash->error($mensaje);
+
+            }
+            return $this->dispatcher->forward(array(
+                'controller' => 'products',
+                'action' => 'editar/'.$id
+            ));
+        }
+        if($producto->save()==false)
+        {
+            foreach ($producto->getMessages() as $mensaje) {
+                $this->flash->error($mensaje);
+            }
+            return $this->dispatcher->forward(array(
+                'controller' => 'products',
+                'action' => 'editar/'.$id
+            ));
+        }
+        $formulario->clear();
+        $this->flash->success("El producto ha sido actualizado correctamente");
+          return $this->dispatcher->forward(array(
+        'controller' => 'products',
+        'action' => 'index'
+    ));
+
     }
 
     /**
@@ -137,7 +199,24 @@ class ProductsController extends ControllerBase
      */
     public function eliminarAction($id)
     {
-        //...
+        $products = Products::findFirstById($id);
+        if (!$products) {
+            $this->flash->error("Product was not found");
+            return $this->forward("products/index");
+        }
+
+        if (!$products->delete()) {
+            foreach ($products->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+            return $this->forward("products/search");
+        }
+
+        $this->flash->success("Product was deleted");
+        return $this->dispatcher->forward(array(
+            'controller' => 'products',
+            'action' => 'index'
+        ));
     }
 
 }
