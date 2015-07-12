@@ -87,9 +87,10 @@ $di->setShared('session', function () {
 $di->set('flash', function()
 {
     return new Phalcon\Flash\Direct(array(
-        'error' => 'alert alert-error',
-        'success' => 'alert alert-success',
-        'notice' => 'alert alert-info',
+        'error'     => 'alert alert-danger',
+        'success'   => 'alert alert-success',
+        'notice'    => 'alert alert-info',
+        'warning'   => 'alert alert-warning',
     ));
 });
 /**
@@ -103,4 +104,24 @@ $di->set('flash', function()
  */
 $di->set('elements', function(){
     return new ComponentesUsuario();
+});
+/**
+ * Registramos el gestor de eventos
+ */
+$di->set('dispatcher', function() use ($di)
+{
+
+    $eventsManager = $di->getShared('eventsManager');
+
+    $roles = new Seguridad($di);
+
+    /**
+     * Escuchamos eventos en el componente dispatcher usando el plugin Roles
+     */
+    $eventsManager->attach('dispatch', $roles);
+
+    $dispatcher = new Phalcon\Mvc\Dispatcher();
+    $dispatcher->setEventsManager($eventsManager);
+
+    return $dispatcher;
 });

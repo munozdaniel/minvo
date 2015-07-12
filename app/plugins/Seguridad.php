@@ -1,38 +1,178 @@
 <?php
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Events\Event;
+use Phalcon\Acl\Resource;
 class Seguridad extends \Phalcon\Mvc\User\Plugin
 {
     public function beforeExecuteRoute(Event $event, Dispatcher $dispatcher)
     {
-        //Verificar si la variable de sesión 'auth' está definida, esto indica si hay un usuario autenticado
         $auth = $this->session->get('auth');
+
         if(!$auth)
-            $rol = 'Invitado';
+            $role = 'Guest';
         else
-            $rol = 'Usuario';
+            $role = $auth["rol"];
+        /*
+        //esta sesión sólo la tendrá el admin
+        $admin = $this->session->get('admin');
+        //esta sesión sólo la tendrá el usuario registrado
+        $registered = $this->session->get('registered');
 
-        //Obtener el controlador y acción actual desde el Dispatcher
-        $controlador = $dispatcher->getControllerName();
-        $accion = $dispatcher->getActionName();
+        //si no es admin ni un usuario registrado es guest
+        if (!$admin && !$registered)
+        {
+            $role = 'Guest';
+        }
+        //si es admin
+        else if($admin)
+        {
+            $role = 'Admin';
+        }
+        //en otro caso es un usuario registrado
+        else
+        {
+            $role = 'Registered';
+        }
+*/
+        //nombre del controlador al que intentamos acceder
+        $controller = $dispatcher->getControllerName();
 
-        //Obtener la lista ACL
+        //nombre de la acción a la que intentamos acceder
+        $action = $dispatcher->getActionName();
+
+        //obtenemos la Lista de Control de Acceso(acl) que hemos creado
         $acl = $this->getAcl();
 
-        //Verificar si el pérfil (rol) tiene acceso al controlador/acción
-        $permitido = $acl->isAllowed($rol, $controlador,$accion);
-        if($permitido != \Phalcon\Acl::ALLOW)
+        //boolean(true | false) si tenemos permisos devuelve true en otro caso false
+        $allowed = $acl->isAllowed($role, $controller, $action);
+
+        //si el usuario no tiene acceso a la zona que intenta acceder
+        //le mostramos el contenido de la función index del controlador index
+        //con un mensaje flash
+        if ($allowed != \Phalcon\Acl::ALLOW)
         {
-            //Si no tiene acceso mostramos un mensaje y lo redireccionamos al inicio
-            $this->flash->error("No tiene acceso a este modulo.");
-            $dispatcher->forward(array('controller'=>'errores','action'=>'mostrar401'));
+            $this->flash->error("Zona restringida, no puedes entrar aquí!");
+            $dispatcher->forward(
+                array(
+                    'controller' => 'index',
+                    'action' => 'index'
+                )
+            );
+            return false;
         }
-        //Devolver "false" le indica al Dispatcher que debe detener la operación
-        //y evitar que la acción se ejecute
-        return false;
 
     }
+
+    /**
+     * lógica para crear una aplicación con roles de usuarios
+     */
     public function getAcl()
+    {
+        if (!isset($this->persistent->acl))
+        {
+            //creamos la instancia de acl para crear los roles
+            $acl = new Phalcon\Acl\Adapter\Memory();
+
+            //por defecto la acción será denegar el acceso a cualquier zona
+            $acl->setDefaultAction(Phalcon\Acl::DENY);
+            //----------------------------ROLES-----------------------------------
+
+            //registramos los roles que deseamos tener en nuestra aplicación****
+            $roles = array(
+                'admin' 		=> new Phalcon\Acl\Role('Admin'),
+                'registered' 	=> new Phalcon\Acl\Role('Registered'),
+                'guest' 		=> new Phalcon\Acl\Role('Guest')
+            );
+
+            //añadimos los roles al acl
+            foreach ($roles as $role)
+            {
+                $acl->addRole($role);
+            }
+            //---------------------------------------------------------------
+            //----------------------------PAGINAS-----------------------------------
+            //ZONAS accesibles sólo para rol admin ***
+            $adminAreas = array(
+                'admin' => array('index', 'save'),
+
+            );
+
+            //añadimos las zonas de administrador a los recursos de la aplicación
+            foreach ($adminAreas as $resource => $actions)
+            {//Añadimos controlador y la accion
+                $acl->addResource(new Resource($resource), $actions);
+            }
+            //---------------------------------------------------------------
+            //zonas protegidas sólo para usuarios registrados de la aplicación***
+            $registeredAreas = array(
+                'dashboard' => array('index'),
+                'profile' => array('index', 'edit'),
+                'products'  =>  array('index','buscar','editar','crear','eliminar')
+
+            );
+
+            //añadimos las zonas para usuarios registrados a los recursos de la aplicación
+            foreach ($registeredAreas as $resource => $actions)
+            {
+                $acl->addResource(new Resource($resource), $actions);
+            }
+            //---------------------------------------------------------------
+
+            //zonas públicas de la aplicación
+            $publicAreas = array(
+                'index'     =>  array('index', 'register', 'login', 'end'),
+                'sesion'  =>  array('index','validar','end','crear','eliminar')
+            );
+
+            //añadimos las zonas públicas a los recursos de la aplicación
+            foreach ($publicAreas as $resource => $actions)
+            {
+                $acl->addResource(new Resource($resource), $actions);
+            }
+            //---------------------------------------------------------------
+            //---------------------------ACCESOS------------------------------------
+
+            //damos acceso a todos los usuarios a las zonas públicas de la aplicación
+            foreach ($roles as $role)
+            {
+                foreach ($publicAreas as $resource => $actions)
+                {
+                    $acl->allow($role->getName(), $resource, '*');
+                }
+            }
+
+            //damos acceso a la zona de admins solo a rol Admin
+            foreach ($adminAreas as $resource => $actions)
+            {
+                foreach ($actions as $action)
+                {
+                    $acl->allow('Admin', $resource, $action);
+                }
+            }
+
+            //damos acceso a las zonas de registro tanto a los usuarios
+            //registrados como al admin
+            foreach ($registeredAreas as $resource => $actions)
+            {
+                //damos acceso a los registrados
+                foreach ($actions as $action)
+                {
+                    $acl->allow('Registered', $resource, $action);
+                }
+                //damos acceso al admin
+                foreach ($actions as $action)
+                {
+                    $acl->allow('Admin', $resource, $action);
+                }
+            }
+
+            //El acl queda almacenado en sesión
+            $this->persistent->acl = $acl;
+        }
+
+        return $this->persistent->acl;
+    }
+    public function getAcl1()
     {
         //Crear el ACL
         $acl = new Phalcon\Acl\Adapter\Memory();

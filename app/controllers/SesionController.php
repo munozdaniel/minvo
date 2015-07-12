@@ -50,7 +50,8 @@ class SesionController extends \Phalcon\Mvc\Controller
     public function _registerSession($usuario)
     {
         $this->session->set('auth',array('id'   =>  $usuario->id,
-                                        'name'  =>  $usuario->name));
+                                        'name'  =>  $usuario->name,
+                                        'rol'   =>  'Admin'));
     }
     /**
      * Finishes the active session redirecting to the index
@@ -61,7 +62,10 @@ class SesionController extends \Phalcon\Mvc\Controller
     {
         $this->session->remove('auth');
         $this->flash->success('Goodbye!');
-        return $this->forward('index/index');
+        return $this->dispatcher->forward(array(
+            'controller' => 'index',
+            'action' => 'index'
+        ));
     }
 }
 

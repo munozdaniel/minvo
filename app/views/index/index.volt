@@ -1,5 +1,5 @@
  <div class="col-12">
-
+    {{ content() }}
     <h1 class="page-header">
         PHALCON <small> PHP</small>
     </h1>
