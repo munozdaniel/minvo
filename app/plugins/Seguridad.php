@@ -107,7 +107,8 @@ class Seguridad extends \Phalcon\Mvc\User\Plugin
             $registeredAreas = array(
                 'dashboard' => array('index'),
                 'profile' => array('index', 'edit'),
-                'products'  =>  array('index','buscar','editar','crear','eliminar')
+                'products'  =>  array('index','buscar','editar','crear','eliminar'),
+                'calendario'    =>  array('index')
 
             );
 

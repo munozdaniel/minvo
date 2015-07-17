@@ -133,13 +133,16 @@
 
                 </li>
                 <li>
-                    <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
+
+                    <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Calendario <i class="fa fa-fw fa-caret-down"></i></a>
                     <ul id="demo" class="collapse">
                         <li>
-                            <a href="#">Dropdown Item</a>
+                            {{ link_to("calendario", '<i class="fa fa-fw fa-wrench"></i> Ver Eventos')}}
+
                         </li>
                         <li>
-                            <a href="#">Dropdown Item</a>
+                            {{ link_to("producttypes", '<i class="fa fa-fw fa-wrench"></i> Agregar Evento')}}
+
                         </li>
                     </ul>
                 </li>
