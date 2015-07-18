@@ -105,10 +105,11 @@ class Seguridad extends \Phalcon\Mvc\User\Plugin
             //---------------------------------------------------------------
             //zonas protegidas sólo para usuarios registrados de la aplicación***
             $registeredAreas = array(
-                'dashboard' => array('index'),
-                'profile' => array('index', 'edit'),
-                'products'  =>  array('index','buscar','editar','crear','eliminar'),
-                'calendario'    =>  array('index')
+                'dashboard'     =>  array('index'),
+                'profile'       =>  array('index', 'edit'),
+                'products'      =>  array('index','buscar','editar','crear','eliminar'),
+                'calendario'    =>  array('index'),
+                'evento'        =>  array('index','save')
 
             );
 
