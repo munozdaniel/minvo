@@ -137,11 +137,11 @@
                     <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Calendario <i class="fa fa-fw fa-caret-down"></i></a>
                     <ul id="demo" class="collapse">
                         <li>
-                            {{ link_to("calendario", '<i class="fa fa-fw fa-wrench"></i> Ver Eventos')}}
+                            {{ link_to("calendario", '<i class="fa fa-fw fa-wrench"></i> Ver Calendario')}}
 
                         </li>
                         <li>
-                            {{ link_to("producttypes", '<i class="fa fa-fw fa-wrench"></i> Agregar Evento')}}
+                            {{ link_to("evento", '<i class="fa fa-fw fa-wrench"></i> Agregar Evento')}}
 
                         </li>
                     </ul>

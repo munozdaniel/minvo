@@ -4,7 +4,7 @@
 
     {{ javascript_include('bower_components/jquery/jquery.min.js') }}
 {% endblock %}
-<div class="col-12">
+<div class="col-md-12">
 
         <ol class="breadcrumb">
             <li>{{ link_to("calendario", '<i class="fa fa-calendar"></i> Calendario')}}</li>
