@@ -109,7 +109,7 @@ class Seguridad extends \Phalcon\Mvc\User\Plugin
                 'profile'       =>  array('index', 'edit'),
                 'products'      =>  array('index','buscar','editar','crear','eliminar'),
                 'calendario'    =>  array('index'),
-                'evento'        =>  array('index','save')
+                'evento'        =>  array('index','guardar')
 
             );
 
